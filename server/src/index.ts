@@ -1,4 +1,17 @@
-//import express library 
+//server manager file
+
+/*
+    create the server, make the new server accessible on a specified port,
+    and decide what the server is capable of doing/processing via the routes you define
+*/
+
+
+
+//import the connection pool 
+import connectionPool from "./db/connection"
+
+
+//import express library - so we can code the server in Express
 import express from "express"
 
 //create the server object - use express to build an "app" that will control the back-end
@@ -12,8 +25,23 @@ app.get("/", (req, res) => {
 
 
 //start the server and keep it running/listening to a specified port
-app.listen(3001, () => {
-    //console log a success message in the terminal (for the developer)
-    console.log("Server Started Successfully")
+app.listen(3001, async () => {
+    //try block
+    try {
+        //console log a success message in the terminal (for the developer)
+        console.log("Server Started Successfully")
+
+        //test if the connection the the the pool (our access to PostgreSQL) is successful
+        await connectionPool.query('SELECT COUNT(*) FROM algos')
+
+        //log a success message if the query to the connection pool worked 
+        console.log("Server is connected to PostgreSQL DB")
+
+    //catch block - runs if anything in the try block throws an error 
+    //error -> the error passed to the catch block comes from the error object thrown by the failed try block
+    } catch (error){
+        //if the query failed
+        console.log(error)
+    }
 })
     
