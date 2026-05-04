@@ -40,7 +40,7 @@ app.listen(3001, async () => {
     //catch block - runs if anything in the try block throws an error 
     //error -> the error passed to the catch block comes from the error object thrown by the failed try block
     } catch (error){
-        //if the query failed
+        //if the query failed console log the error object passed into the catch block
         console.log(error)
     }
 })
