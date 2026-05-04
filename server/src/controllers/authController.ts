@@ -20,10 +20,14 @@
     JWT - keeps the user logged in and proves identity for every request made by the user
     jwt.sign(payload, secret, options) creates the token, takes your data combines it w/ JWT secret and produces signed token string
 
-    res.json() converts JS object into JSON string that can travel over the internet AND
-    sends the parsed object now string as a response to whoever made the request originally 
-    res.json only takes one argument so if you want to pass multiple thing you wrap them in an object 
+    res.json() converts a JS object into a JSON string and sends it as the response to whoever made the request
+    res.json() only takes one argument so if you want to pass multiple things wrap them in an object
+
+    res.status() sets the HTTP status code on the response - tells the frontend what kind of response this is before it reads the data
+    chaining res.status(409).json() works because res.status() returns res - allowing you to keep calling methods on it
+    if not specifically set it defaults to 200 - which means success
 */
+
 
 
 

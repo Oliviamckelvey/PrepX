@@ -12,6 +12,14 @@
 
     its best to test connection pool immediately and throw an error if we weren't able to access the database
     if connection to the database fails, shut down the server entirely 
+
+    cors (Cross-Origin Resource Sharing) - browsers block requests between different origins by default (security feature)
+    your frontend (port 5173) and backend (port 3001) are on different ports = different origins = blocked by default
+    app.use(cors()) tells the server to allow cross-origin requests - without it your frontend can never talk to your backend
+
+    mounting = attaching a router to the main app so Express knows it exists - done once per router
+    app.use('/api/authentication', authRouter) tells Express "any request starting with /api/authentication belongs to this router"
+    /api signals these URLs are data endpoints not web pages - /authentication groups all authentication routes together
 */
 
 
@@ -26,9 +34,12 @@ import connectionPool from "./db/connection"
 //import the cors library - what allows communication between front-end and back-end
 import cors from 'cors'
 
+//import the authentication router to give the server access to all of the authRoutes
+import { authRouter } from './routes/authRoutes'
 
 
 //create the server object - use express to build an "app" that will control the back-end
+//every request is made to the server/app and the app direct every request to their proper routes
 const app = express()
 
 
@@ -38,6 +49,9 @@ app.use(express.json())
 
 //runs cross-origin resource sharing in the application - allowing the front and back end to communicate with one another despite being on different ports
 app.use(cors())
+
+//mount the authentication router on the server - giving the server access to all routes defined on the router
+app.use('/api/authentication', authRouter)
 
 
 
