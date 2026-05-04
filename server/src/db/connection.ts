@@ -1,9 +1,12 @@
-//server-database connection file
+//Server-Database Connection Pool File
 
 /*
     reads database credentials from .env file 
     use them to open and maintain a set of ready-to-use connections
     for PostgeSQL database to the back-end (server)
+
+    this serves as our app's access point to the db 
+    queries are made to the connection pool that connects to the db rather than the db itself
 */
 
 

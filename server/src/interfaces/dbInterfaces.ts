@@ -1,3 +1,5 @@
+//TypeScript Interfaces File
+
 /*
     define TypeScript interfaces for each table the application interacts  
     don't sensitive information that shouldn't be exposed
@@ -9,6 +11,8 @@
     application's back-end is written in TypeScript 
     when the algo controller queries the database and gets rows back - 
     TypeScript needs to know the shape of the data it is working with in order to catch mistake for you 
+
+    all of the following interfaces are used to describe the shape of data coming our of the database
 */
 
 
@@ -18,6 +22,8 @@
 //turns the file into a module -> needed in order for TS to use declare global on line 25
 //must be at the top of file so TS reads it first and turns the file into a module
 export {}
+
+//export all interfaces directly in-line because above is a special case - not used for exporting interfaces
 
 //allows middleware to attach a userID to the request object 
 //without middleware being able to set req.userId controller wouldn't know who is making the request
@@ -34,7 +40,7 @@ declare global {
 
 
 //describes the shape of a user object returned from the users table (excluding the password_hash)
-interface User {
+export interface User {
     id: number
     email: string
     name: string
@@ -42,7 +48,7 @@ interface User {
 
 
 //describes the shape of a single algo object returned from the algos table
-interface Algo {
+export interface Algo {
     id: number
     title: string
     difficulty: string
@@ -53,7 +59,7 @@ interface Algo {
 
 
 //describes the shape of a behavioral question from the behavioral_questions table
-interface BehavioralQuestion {
+export interface BehavioralQuestion {
     id: number
     question: string
     category: string
@@ -62,7 +68,7 @@ interface BehavioralQuestion {
 
 //describes the shape of system design topic returned from the system_design_topics table
 //practice_question and resource_url are nullable — we haven't given the db table this information yet
-interface SystemDesignTopic {
+export interface SystemDesignTopic {
     id: number
     title: string
     description: string
@@ -74,7 +80,7 @@ interface SystemDesignTopic {
 
 //describes the shape of a users progress on a single algo from the user_algos tables
 //confidence, time_taken_minutes and notes are nullable — user may not have filled them in yet 
-interface UserAlgo {
+export interface UserAlgo {
     id: number
     user_id: number
     algo_id: number
@@ -87,7 +93,7 @@ interface UserAlgo {
 
 //describes the shape of a users STAR approach to answering a behavioral question
 //all four STAR properties are nullable - the user may not have filled them out yet 
-interface UserBehavioralAnswer {
+export interface UserBehavioralAnswer {
     id: number
     user_id: number
     question_id: number
@@ -100,7 +106,7 @@ interface UserBehavioralAnswer {
 
 //describes the shape of a user's personal notes in response to a system design topic question
 //notes are nullable - the user make not have answered/taken notes on the topic yet 
-interface SystemDesignNote {
+export interface SystemDesignNote {
     id: number
     user_id: number
     topic_id: number
