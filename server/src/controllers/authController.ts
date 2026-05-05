@@ -26,6 +26,9 @@
     res.status() sets the HTTP status code on the response - tells the frontend what kind of response this is before it reads the data
     chaining res.status(409).json() works because res.status() returns res - allowing you to keep calling methods on it
     if not specifically set it defaults to 200 - which means success
+
+    bcrypt.compare(plainTextPassword, storedHash) - internally hashes the plain text and compares it to the stored hash
+    returns true if they match, false if they don't - must be awaited because it is asynchronous
 */
 
 
@@ -48,9 +51,12 @@ import jwt from 'jsonwebtoken'
 
 
 
+//these controller function are async because they query/communicate with the database (via the connectionPool) which takes time
+
+
 //register function - export inline so route files can use this function directly
-//function is async because it queries/communicates with the database (via the connectionPool) which takes time
 export const register = async (req: Request, res: Response) => {
+    //run all the code in try block, if there is an issue throw an error object and run the code in the catch block 
     try {
         //use destructuring to get email, password and name from the req.body - req.body is incoming object of data from the user attempting to register
         const { email, name, password } = req.body
@@ -58,7 +64,7 @@ export const register = async (req: Request, res: Response) => {
         //check if the email already exists in the database using SQL query - must await the query 
         const queryResult = await connectionPool.query('SELECT * FROM users WHERE email = $1', [email])
 
-        //(cant register more than once) if email exists, throw an error -> send a response signaling an error code to the client 
+        //(cant register more than once) if email exists, throw an error -> send a response to the client signaling an error that email has already been registered 
         //409: signifies conflict - already exists and shouldn't be duplicated
         if(queryResult.rows.length) return res.status(409).json({ error: "Email has already been registered"})
 
@@ -99,13 +105,78 @@ export const register = async (req: Request, res: Response) => {
             }
         })
         
-    //if any code in the try block throws an error - it is handled by the catch block
+    //if any code in the try block throws an unexpected error - it is handled by the catch block
     } catch (error) {
-        //log the error object so developers can see what went wrong
+        //log the error object so developers can see/know what went wrong
         console.log(error)
+
         //set an error status code of 500 which indicates something went wrong on the server's side - res.status()
         //sends the actual response to the client in JSON string format - browser readable - res.json()
         res.status(500).json({ error: 'Internal server error'})
     }
     
+}
+
+
+
+
+
+
+
+
+//login function - export inline so route files can use this function directly
+export const login = async (req: Request, res: Response) => {
+    //run all the code in try block, if there is an issue throw an error object and run the code in the catch block 
+    try {
+        //use destructuring to get email and password from req.body - req.body is incoming object of data from the user attempting to login
+        const { email, password } = req.body
+
+        //check if the email the user entered exists in the database using SQL - save the object returned by the query 
+        //you cant check the password too because the database holds the hashed version but the user enters the regular password so they wont match
+        const queryResult = await connectionPool.query('SELECT * FROM users WHERE email = $1', [email])
+
+        //if the email/user doesn't exist in the database send a response error to the client signaling the entered credentials are invalid
+        if(!queryResult.rows.length) return res.status(401).json({ error: "Invalid Credentials" })
+
+        //access the user row from the query result & store as a constant to use for password comparison
+        //always at index [0] because email is UNIQUE so only one row can ever match
+        const userObject = queryResult.rows[0]
+
+
+        //use bcrypt.compare() to check if the plain text password from the login attempt matches the stored hash in the database
+        //if the passwords do NOT match send a 401 error response to the client signaling that the enter credentials were not valid
+        if(!await bcrypt.compare(password, userObject.password_hash)) return res.status(401).json({ error: "Invalid Credentials"})
+
+        //otherwise create JWT- store the return in a constant so it can be returned to the user and used by the front end 
+        const token = jwt.sign(
+            //payload: { userId } - identifies the user on future requests
+            { userId: userObject.id },
+            //secret: JWT_SECRET from .env - makes the token impossible to fake
+            //! -> non-null assertion operator - TypeScript thinks the value might be undefined but the ! assures TS we know the value exists 
+            process.env.JWT_SECRET!,
+            //options: expiresIn - how long before the token expires and user must log in again
+            { expiresIn: '7d' }
+        )
+
+        //send the JWT token and safe user object back to the front-end - always use res.json() when sending data
+        res.json({
+            //send token: allows the front-end to make authenticated requests on behalf of this user
+            token: token,
+            //send user object/information: the front-end needs this to display user info and set up the session in Redux - excludes password_hash for security
+            user: { 
+                id: userObject.id, 
+                email: userObject.email, 
+                name: userObject.name 
+            }
+        })
+
+    //if any code in the try block throws an unexpected error - it is handled by the catch block
+    } catch(error) {
+        //log the error object so developers can see/know what went wrong 
+        console.log(error)
+
+        //set an error status code of 500 which indicates something went wrong on the server's side - res.status()
+        //sends the actual response to the client in JSON string format - browser readable - res.json()
+        res.status(500).json({ error: 'Internal server error'})
+    }
 }

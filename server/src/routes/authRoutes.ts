@@ -27,7 +27,7 @@
 import express from 'express'
 
 //import the authentication controller functions we need to create a route for 
-import { register } from '../controllers/authController'
+import { register, login } from '../controllers/authController'
 
 
 
@@ -50,5 +50,8 @@ export const authRouter = express.Router()
 
 */
 
-//handles POST requests to /register - when a user submits the registration form this route runs the register controller function
+//handles POST requests to /register -> when a user submits the registration form this route runs the register controller function
 authRouter.post('/register', register)
+
+//handles POST requests to /login -> when a user logs in with a email and password this route runs the login controller function 
+authRouter.post('/login', login)
