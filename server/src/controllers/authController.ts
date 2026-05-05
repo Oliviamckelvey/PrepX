@@ -29,6 +29,11 @@
 
     bcrypt.compare(plainTextPassword, storedHash) - internally hashes the plain text and compares it to the stored hash
     returns true if they match, false if they don't - must be awaited because it is asynchronous
+
+    the JWT token only contains a userId in its payload - it does not contain the full user object
+    to get the full user info (name, email etc.) we need to use that userId to query the database
+    getMe does this - it takes the token, extracts the userId, and fetches the complete user from the database
+    this is how the frontend restores a user session - it has the token but needs the actual user data behind it
 */
 
 
@@ -46,6 +51,10 @@ import bcrypt from 'bcrypt'
 //import the jsonwebtoken library - used to create and verify JWT tokens
 //tokens are given to users on login and sent back with every request made by this user so the server knows who is asking 
 import jwt from 'jsonwebtoken'
+
+//import the interfaces file to make TypeScript aware of the declare global extension that adds userId property to the Express Request type
+//without this import TypeScript doesn't know req.userId exists and throws an error
+import '../interfaces/dbInterfaces'
 
 
 
@@ -177,6 +186,41 @@ export const login = async (req: Request, res: Response) => {
 
         //set an error status code of 500 which indicates something went wrong on the server's side - res.status()
         //sends the actual response to the client in JSON string format - browser readable - res.json()
-        res.status(500).json({ error: 'Internal server error'})
+        res.status(500).json({ error: 'Internal server error' })
+    }
+}
+
+
+
+
+//auth middleware verified the JWT token/user, extracted the userId from its payload and attached it to req.userId making accessible to our controller
+//get current user function - uses req.userId to query the database and return the full user object to the frontend
+export const getMe = async (req: Request, res: Response) => {
+    try {
+        //store the userId from the req object 
+        const userId = req.userId
+
+        //query the database (using SQL) to find the user that correlates with the userId we have from the JWT token
+        const queryResult = await connectionPool.query('SELECT * FROM users WHERE id = $1', [userId])
+
+        //access the user row from the query result - always at index [0] since we query by id which is unique
+        const userObject = queryResult.rows[0]
+
+        //send back the user object which tells the front-end who the current user is - exclude the hashed password property 
+        //getMe only returns the user object so no wrapper needed - unlike register/login which return both token AND user requiring an object to hold both
+        res.json({
+            id: userObject.id,
+            email: userObject.email,
+            name: userObject.name
+        })
+
+    //this catch block specifically deal with unexpected errors
+    } catch(error){
+        //log the error object to developers can see what went wrong
+        console.log(error)
+
+        //set an error status code of 500 which indicates something went wrong on the server's side - res.status()
+        //sends the actual response to the client in JSON string format - browser readable - res.json()
+        res.status(500).json({ error: 'Internal Server Error' })
     }
 }

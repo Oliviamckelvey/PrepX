@@ -27,8 +27,10 @@
 import express from 'express'
 
 //import the authentication controller functions we need to create a route for 
-import { register, login } from '../controllers/authController'
+import { register, login, getMe } from '../controllers/authController'
 
+//import auth middleware - runs before protected routes to check the JWT token and attach userId to req
+import { authMiddleware } from '../middleware/authMiddleware'
 
 
 
@@ -55,3 +57,6 @@ authRouter.post('/register', register)
 
 //handles POST requests to /login -> when a user logs in with a email and password this route runs the login controller function 
 authRouter.post('/login', login)
+
+//handles GET requests to /me → auth middleware runs first to verify the token, if valid getMe controller fetches and returns the current user
+authRouter.get('/me', authMiddleware, getMe)
