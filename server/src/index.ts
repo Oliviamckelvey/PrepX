@@ -34,8 +34,11 @@ import connectionPool from "./db/connection"
 //import the cors library - what allows communication between front-end and back-end
 import cors from 'cors'
 
-//import the authentication router to give the server access to all of the authRoutes
+//import the authentication router to give the server access to all of the auth related routes
 import { authRouter } from './routes/authRoutes'
+
+//import the algos router to give server access to all of the algo related routes
+import { algosRouter } from './routes/algosRoutes'
 
 
 //create the server object - use express to build an "app" that will control the back-end
@@ -50,8 +53,16 @@ app.use(express.json())
 //runs cross-origin resource sharing in the application - allowing the front and back end to communicate with one another despite being on different ports
 app.use(cors())
 
-//mount the authentication router on the server - giving the server access to all routes defined on the router
+
+
+//app.use() registers a router with the app - when a request arrives at this prefix Express hands it to the specified router
+
+//mount the authentication router - any request starting with /api/authentication gets handled by authRouter
 app.use('/api/authentication', authRouter)
+
+//mount the algos router - any request starting with /api/algos gets handled by algosRouter
+app.use('/api/algos', algosRouter)
+
 
 
 
@@ -60,6 +71,7 @@ app.get("/", (req, res) => {
     //send a success message to the client signifying the server is running properly 
     res.send("Server is a Success")
 })
+
 
 
 //start the server and keep it running/listening to a specified port
