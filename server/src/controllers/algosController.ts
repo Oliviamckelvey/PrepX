@@ -1,4 +1,4 @@
-//Algos Controller Functions File
+//Algos Feature's Controller Functions File
 
 /*
     a controller contains functions that interact with the database for a specific feature
@@ -120,10 +120,10 @@ export const getAlgos = async ( req: Request, res: Response ) => {
         )
 
         //store the actual data (all the rows of algo data) sent back on the object returned from the SQL db query 
-        const userProgress = queryResult.rows
+        const algoData = queryResult.rows
 
         //send all 75 algos with their progress attached back the user
-        res.json(userProgress)
+        res.json(algoData)
 
     } catch (error) {
         //console the error object so developers can see what went wrong
@@ -168,7 +168,7 @@ export const updateProgress = async ( req: Request, res: Response ) => {
         const userId = req.userId
         
         //get the algoId from req.params.id - captures which specific problem the user is updating from the URL
-        const algoId = req.params.id
+        const algoId = Number(req.params.id)
         
         //get the progress fields from req.body - the four values the user is saving for this problem
         //solved, confidence, time_taken_minutes, notes

@@ -40,6 +40,9 @@ import { authRouter } from './routes/authRoutes'
 //import the algos router to give server access to all of the algo related routes
 import { algosRouter } from './routes/algosRoutes'
 
+//import the behavioral router to have access to all the behavioral related routes
+import { behavioralRouter } from './routes/behavioralRoutes'
+
 
 //create the server object - use express to build an "app" that will control the back-end
 //every request is made to the server/app and the app direct every request to their proper routes
@@ -62,6 +65,9 @@ app.use('/api/authentication', authRouter)
 
 //mount the algos router - any request starting with /api/algos gets handled by algosRouter
 app.use('/api/algos', algosRouter)
+
+//mount the behavioral router - direct any requests to this path to the behavioral router
+app.use('/api/behavioral', behavioralRouter)
 
 
 
