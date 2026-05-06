@@ -1,12 +1,12 @@
 //API configuration/Axios Set Up File
 
 /*
-    API configuration  = the Axios setup for how those requests are handled (base URL, token, interceptor)
-    API calls = the actual requests (get data, save data) - functions that use the set up to talk to your back end 
-
     Axios is a library that makes HTTP requests from the frontend to the backend
     this file creates a configured Axios instance that every component imports and uses to talk to the backend
     same concept as connection.ts on the backend - configured once, exported, used everywhere
+
+    API configuration  = the Axios setup for how those requests are handled (base URL, token, interceptor)
+    API calls = the actual requests (get data, save data) - functions that use the set up to talk to your back end 
 
     BASE URL
     tells Axios where to send the requests from the front-end 
