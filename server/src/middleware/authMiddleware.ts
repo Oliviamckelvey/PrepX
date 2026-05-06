@@ -7,10 +7,11 @@
     a protected route requires a valid JWT token to access - used for any route that returns personal user data
     protected = the user must be signed in (have a valid token) to access this route
 
-    HTTP requests arrive with headers - key value pairs that carry extra info about the request 
-    the Authorization header is one of those labels - it carries the JWT token the frontend sends on every protected request
-    the Authorization header value looks like "Bearer <token>" - two parts separated by a space
-    middleware splits that string and takes just the token part (everything after "Bearer ") to verify
+    every HTTP request arrives with two parts: body (the data) and headers (extra info about the request)
+    headers are key-value pairs that travel alongside the body - like a label on a package
+    req.headers is an object containing ALL headers that came with the request
+    req.headers.authorization specifically reads the Authorization header - where the JWT token is sent
+    format: "Authorization: Bearer <token>" - the Axios interceptor adds this header automatically on every protected request
 
     auth middleware is the gatekeeper for all protected routes - it runs before the controller on every protected request
     it reads the JWT token from the Authorization header, verifies it, and extracts the userId from the payload
@@ -43,7 +44,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
         //if the authentication header does NOT exist this signifies the user has no token - return a response error to the client 
         if(!authHeader) return res.status(401).json({ error: 'Unauthorized' })
 
-        //extract the token by isolating it with .split() and store the value
+        //extract the token by isolating it with .split() and store the value - assumes Bearer format 
         const token = authHeader.split(' ')[1]
 
         //verify the token - if token is valid jwt.verify(token, secret) returns the payload (object that contains the user's id)
