@@ -81,8 +81,9 @@ const LoginPage = () => {
     //functions - handle everything that has to happen in response to a user performing one of the available actions on this page
     //the user cna do one thing -> login - need a function to handle log in which involves back-end communication and much more
     const handleLogin = async () => {
-        //?? WRITE PSUEDO CODE
+        //clear any previous error message before any new attempt
         setError(null)
+        
         try {
             //when the user attempts to log in front-end needs to send credentials (http request) to the back end - so it can check them and send a response granting log in or not 
             //post request sends data to the server
@@ -106,7 +107,6 @@ const LoginPage = () => {
     }
     //return JSX component - what the user sees (build the page)
     //?? WRITE PSUEDO CODE for the conditional error rendering
-    //onChange????e???
     return (
         <div>
             <input type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>

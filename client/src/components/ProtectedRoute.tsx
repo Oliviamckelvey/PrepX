@@ -41,16 +41,19 @@ const ProtectedRoute = (props) => {
     //use the token because its more efficient - we are checking to see IF someone is logged in, specific user data is not relevant
     const authData = useContext(AuthContext)
 
+    //read token from AuthContext - exists if user is logged in, null if not
     const token = authData.token
+    //read loading from AuthContext - true while session is being restored on page refresh, false when done
+    const loading = authData.loading
 
-    //if the user token exists the user is logged in and we can navigate to grant access to the routes we wanted protected
-    if(token) return props.children
+    //while session is restoring - show loading instead of redirecting - prevents premature redirect before token is restored
+    if(loading) return <div>Loading...</div>
 
-    //otherwise if there is no token there is no user logged in and they should be redirected to the login page upon the unauthorized request
-    else return (
-        <Navigate to ='/login'/>
-    )
-
+    //if the user token does NOT exist the user is redirected to the log in page
+    if(!token) return <Navigate to ='/login'/>
+    
+    //token exists - user is logged in - render the protected page    
+    return props.children
 }
 
 export default ProtectedRoute

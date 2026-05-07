@@ -89,6 +89,9 @@ export const AuthProvider = (props) => {
     const [user, setUser] = useState(null)
     const [token, setToken]  = useState(null)
 
+    //while this is true it tells the protected route to wait because the system is still checking if user is logged in - for refreshing
+    const [loading, setLoading] = useState(true)
+
     //create the functions that run in response to state data being altered on the UI - the only way UI changes this data is by logging in or out
     const login = (userData: any, userToken: string) => {
         //update the user data and token using the setter functions
@@ -132,6 +135,9 @@ export const AuthProvider = (props) => {
                 console.log(error)
                 //call logout to clear bad token from localStorage and reset state to null
                 logout()
+            //runs regardless of try or catch block - no matter what stop loading/stop showing loading to user
+            } finally {
+                setLoading(false)
             }
         }
         //call the async function - defining it alone doesn't run it
@@ -147,7 +153,7 @@ export const AuthProvider = (props) => {
     //{children} - renders everything wrapped inside <AuthProvider> in App.tsx - without this nothing would show on screen
     //{} curly braces are how you use/incorporate JavaScript in JSX
     return (
-        <AuthContext.Provider value={{user: user, token: token, login: login, logout: logout}}>
+        <AuthContext.Provider value={{user: user, token: token, login: login, logout: logout, loading: loading}}>
             {props.children}
         </AuthContext.Provider>
     )
