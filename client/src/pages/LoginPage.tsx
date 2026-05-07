@@ -83,7 +83,7 @@ const LoginPage = () => {
     const handleLogin = async () => {
         //clear any previous error message before any new attempt
         setError(null)
-        
+
         try {
             //when the user attempts to log in front-end needs to send credentials (http request) to the back end - so it can check them and send a response granting log in or not 
             //post request sends data to the server
@@ -107,15 +107,22 @@ const LoginPage = () => {
     }
     //return JSX component - what the user sees (build the page)
     //?? WRITE PSUEDO CODE for the conditional error rendering
-    return (
-        <div>
-            <input type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
-            <input type='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
-            <button onClick={handleLogin}>Login</button>
-            <Link to="/register">Register</Link>
-            {error ? <p>{error}</p> : null}
-        </div>
-    )
+return (
+  <div className="auth-page">
+    <div className="auth-card">
+      <h1 className="auth-logo">PrepX</h1>
+      <p className="auth-subtitle">Technical Interview Training</p>
+      
+      <div className="auth-form">
+        {error && <div className="auth-error">{error}</div>}
+        <input className="form-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email"/>
+        <input className="form-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="password"/>
+        <button className="btn-primary" onClick={handleLogin}>LOGIN</button>
+        <Link to="/register">REGISTER</Link>
+      </div>
+    </div>
+  </div>
+)
 }
 
 export default LoginPage

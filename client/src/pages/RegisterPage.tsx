@@ -109,15 +109,22 @@ const RegisterPage = () => {
 
     //return JSX component - what the user sees (build the page)
     return (
-        <div>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
-            <input type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
-            <input type='password' value={password} onChange={(e) => setPassword(e.target.value)}></input>
-            <button onClick={handleRegistration}>Register</button>
-            <Link to='/login'>Login</Link>
-            {error ? <p>{error}</p> : null}
+        <div className="auth-page">
+            <div className="auth-card">
+            <h1 className="auth-logo">PrepX</h1>
+            <p className="auth-subtitle">Technical Interview Training</p>
+            
+            <div className="auth-form">
+                {error && <div className="auth-error">{error}</div>}
+                <input className="form-input" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="name"/>
+                <input className="form-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email"/>
+                <input className="form-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="password"/>
+                <button className="btn-primary" onClick={handleRegistration}>REGISTER</button>
+                <Link to="/login">Already have an account? Login</Link>
+            </div>
+            </div>
         </div>
-  )
+    )
 }
 
 
