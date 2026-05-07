@@ -52,6 +52,9 @@ import AlgosPage from './pages/AlgosPage'
 import BehavioralPage from './pages/BehavioralPage'
 import SystemDesignPage from './pages/SystemDesignPage'
 
+//import the component that wraps around the pages/routes we want to protect
+import ProtectedRoute from './components/ProtectedRoute'
+
 
 
 
@@ -64,10 +67,10 @@ const App = () => {
         <Routes>
           <Route path='/login' element={<LoginPage/>}/>
           <Route path='/register' element={<RegisterPage/>}/>
-          <Route path='/' element={<HubPage/>}/>
-          <Route path='/algos' element={<AlgosPage/>}/>
-          <Route path='/behavioral' element={<BehavioralPage/>}/>
-          <Route path='/system-design' element={<SystemDesignPage/>}/>
+          <Route path='/' element={<ProtectedRoute><HubPage/></ProtectedRoute>}/>
+          <Route path='/algos' element={<ProtectedRoute><AlgosPage/></ProtectedRoute>}/>
+          <Route path='/behavioral' element={<ProtectedRoute><BehavioralPage/></ProtectedRoute>}/>
+          <Route path='/system-design' element={<ProtectedRoute><SystemDesignPage/></ProtectedRoute>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

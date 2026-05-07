@@ -112,7 +112,7 @@ export const AuthProvider = (props) => {
     //on refresh localStorage persist but React state disappears - so you need to update React state with localStorage data
     useEffect(() => {
         //define async function inside useEffect - useEffect itself cannot be async
-        const restoreState = async() => {
+        const restoreState = async () => {
             //wrap in try/catch - if token is expired or invalid the API call will fail
             try {
                 //check if a token exists in localStorage - if not skip restoring the session
