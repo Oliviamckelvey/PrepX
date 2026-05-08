@@ -111,7 +111,7 @@ export const AuthProvider = (props) => {
         localStorage.removeItem('token')
     }
 
-    //useEffect is the code that bridges the gap between what's in localStorage and what's in state after a page refresh
+    //useEffect is where we bridge the gap between what's in localStorage and what's in state after a page refresh
     //on refresh localStorage persist but React state disappears - so you need to update React state with localStorage data
     useEffect(() => {
         //define async function inside useEffect - useEffect itself cannot be async

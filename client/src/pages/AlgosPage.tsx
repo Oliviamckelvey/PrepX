@@ -116,27 +116,31 @@ const AlgosPage = () => {
 
         {selectedAlgo && (
             <div className="progress-panel">
-            <h2 className="panel-title">{(selectedAlgo).title}</h2>
-            <div className="panel-form">
-                <div className="solved-row">
-                <label className="panel-label">Solved</label>
-                <input type="checkbox" checked={solved} onChange={(e) => setSolved(e.target.checked)} style={{ accentColor: '#00ff88', width: '1.2rem', height: '1.2rem' }}/>
+                <h2 className="panel-title">{(selectedAlgo).title}</h2>
+                <div className="panel-form">
+                    <div className="solved-row">
+                        <label className="panel-label">Solved</label>
+                        <input type="checkbox" checked={solved} onChange={(e) => setSolved(e.target.checked)} style={{ accentColor: '#00ff88', width: '1.2rem', height: '1.2rem' }}/>
+                    </div>
+                    
+                    <div className="panel-field">
+                        <label className="panel-label">Confidence: {confidence}/5</label>
+                        <input type="range" min={1} max={5} value={confidence} onChange={(e) => setConfidence(Number(e.target.value))} style={{ accentColor: '#00ff88' }}/>
+                    </div>
+
+                    <div className="panel-field">
+                        <label className="panel-label">Time (Minutes)</label>
+                        <input type="number" value={timeTaken} onChange={(e) => setTimeTaken(Number(e.target.value))} className="panel-input"/>
+                    </div>
+
+                    <div className="panel-field">
+                        <label className="panel-label">Notes</label>
+                        <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={4} className="panel-textarea"/>
+                    </div>
+                    
+                    <button className="btn-primary" onClick={handleUpdateProgress}>Save Progress</button>
+                    <button onClick={() => setSelectedAlgo(null)} style={{ background: 'transparent', border: '1px solid #1e1e3a', color: '#5a5a8a', fontFamily: "'Share Tech Mono', monospace", fontSize: '0.75rem', padding: '0.5rem', cursor: 'pointer', width: '100%' }}>cancel</button>
                 </div>
-                <div className="panel-field">
-                <label className="panel-label">Confidence: {confidence}/5</label>
-                <input type="range" min={1} max={5} value={confidence} onChange={(e) => setConfidence(Number(e.target.value))} style={{ accentColor: '#00ff88' }}/>
-                </div>
-                <div className="panel-field">
-                <label className="panel-label">Time (minutes)</label>
-                <input type="number" value={timeTaken} onChange={(e) => setTimeTaken(Number(e.target.value))} className="panel-input"/>
-                </div>
-                <div className="panel-field">
-                <label className="panel-label">Notes</label>
-                <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={4} className="panel-textarea"/>
-                </div>
-                <button className="btn-primary" onClick={handleUpdateProgress}>Save Progress</button>
-                <button onClick={() => setSelectedAlgo(null)} style={{ background: 'transparent', border: '1px solid #1e1e3a', color: '#5a5a8a', fontFamily: "'Share Tech Mono', monospace", fontSize: '0.75rem', padding: '0.5rem', cursor: 'pointer', width: '100%' }}>cancel</button>
-            </div>
             </div>
         )}
         </div>

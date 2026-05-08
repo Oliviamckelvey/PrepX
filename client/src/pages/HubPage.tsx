@@ -47,7 +47,7 @@ const HubPage = () => {
             <div className="hub-modules">
 
                 <div className="hub-card" onClick={() => navigate('/algos')}>
-                    <span className="hub-card-number">01</span>
+                    <span className="hub-card-number"> 01</span>
                     <div className="hub-card-content">
                         <h2 className="hub-card-title">GRIND 75</h2>
                         <p className="hub-card-desc">75 essential algorithms. Track your progress, confidence, and the time it takes to solve an algorithm.</p>

@@ -118,7 +118,7 @@ return (
         <input className="form-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email"/>
         <input className="form-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="password"/>
         <button className="btn-primary" onClick={handleLogin}>LOGIN</button>
-        <Link to="/register">REGISTER</Link>
+        <Link to="/register">Register</Link>
       </div>
     </div>
   </div>
