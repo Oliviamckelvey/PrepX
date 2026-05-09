@@ -51,7 +51,7 @@ import axios from "axios"
 //create an axios instance which allows http request from the front-end to communicate with the back-end/server
 const axiosInstance = axios.create({
     //this will change later on when you make application public with Railway 
-    baseURL: 'https://prepx-production.up.railway.app'
+    baseURL: 'http://localhost:3001'
 })
 
 
