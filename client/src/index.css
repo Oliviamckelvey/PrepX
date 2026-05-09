@@ -624,3 +624,88 @@ body::before {
 .behavioral-question.answered {
   color: var(--accent-green);
 }
+
+
+/* ============================================
+   SYSTEM DESIGN PAGE
+   ============================================ */
+ 
+.sd-page {
+  min-height: 100vh;
+  background: var(--bg-deep);
+  padding: 2rem;
+}
+ 
+.sd-header {
+  border-bottom: 1px solid var(--border-glow);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+ 
+.sd-title {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--accent-green);
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+  text-shadow: var(--glow-green);
+}
+ 
+.sd-count {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  margin-top: 0.25rem;
+}
+ 
+.sd-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+ 
+.sd-grid.panel-open {
+  grid-template-columns: 1fr 420px;
+}
+ 
+.sd-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid #1e1e3a;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+ 
+.sd-row:hover {
+  border-color: var(--border-glow);
+}
+ 
+.sd-row.selected {
+  border-color: var(--accent-green);
+}
+ 
+.sd-topic-title {
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+}
+ 
+.sd-topic-title.noted {
+  color: var(--accent-green);
+}
+ 
+.sd-topic-desc {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+ 
+.sd-category {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
