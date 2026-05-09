@@ -36,7 +36,7 @@ import { Navigate } from 'react-router-dom'
 
 
 
-const ProtectedRoute = (props) => {
+const ProtectedRoute = (props: any) => {
     //verify that a user is logged in in order for them to access specific pages/routes 
     //use the token because its more efficient - we are checking to see IF someone is logged in, specific user data is not relevant
     const authData = useContext(AuthContext)

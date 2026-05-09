@@ -83,11 +83,11 @@ export const AuthContext = createContext(null)
 
 
 //create and export a Provider component - holds data and makes it available to users 
-export const AuthProvider = (props) => {
+export const AuthProvider = (props: any) => {
     //everything in this function depends on the current user and their token - save data as state so when user data changes React re-renders
     //setter functions are created for us by React
     const [user, setUser] = useState(null)
-    const [token, setToken]  = useState(null)
+    const [token, setToken]  = useState<string | null>(null)
 
     //while this is true it tells the protected route to wait because the system is still checking if user is logged in - for refreshing
     const [loading, setLoading] = useState(true)
