@@ -57,7 +57,11 @@ const app = express()
 app.use(express.json())
 
 //runs cross-origin resource sharing in the application - allowing the front and back end to communicate with one another despite being on different ports
-app.use(cors())
+app.use(cors({
+  origin: ['https://prep-x-dusky.vercel.app/register', 'http://localhost:5173'],
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+  credentials: true
+}))
 
 
 
